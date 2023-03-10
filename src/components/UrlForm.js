@@ -27,7 +27,7 @@ const UrlForm = () => {
             setWaiting(false);
             setDisplayUrl(true);
         })
-    });
+        });
     }
 
     
