@@ -1,6 +1,7 @@
 import {useState} from 'react';
-import Axios from 'axios';
 import copy_icon from '../assets/copy_icon.png';
+import shortenUrl from './shortenUrl';
+import getShortUrl from './getShortUrl';
 
 const UrlForm = () => {
     const [url, setUrl] = useState('');
@@ -11,22 +12,13 @@ const UrlForm = () => {
     const handleSubmit = () => {
         setDisplayUrl(false);
         setWaiting(true);
-        Axios.post("https://dh-url-shortener.herokuapp.com/shortenUrl", {
-            targetUrl: url
-        }).then((response) => {
-            console.log("URL shortened");
-        }).then(() => {
-
-        Axios.get("https://dh-url-shortener.herokuapp.com/getShortUrl", {
-            params: {
-                q: url
-            }
-        }).then((response) => {
+        shortenUrl(url).then(() => {
+            getShortUrl(url).then((response) => {
             setShortUrl(`https://dh-url-shortener.herokuapp.com/${response.data}`);
-        }).then(() => {
-            setWaiting(false);
-            setDisplayUrl(true);
-        })
+            }).then(() => {
+                setWaiting(false);
+                setDisplayUrl(true);
+            });
         });
     }
 
